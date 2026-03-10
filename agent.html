@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriMind AI · floating agent</title>
+  <!-- Google Font + Font Awesome 6 (free) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #edf7ea;
+      color: #1d3b1a;
+    }
+
+    /* premium glassmorphism navbar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 4rem;
+      background: rgba(18, 75, 25, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: white;
+      box-shadow: 0 15px 30px -12px #1b4e1b;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid #a3d18a;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.7rem;
+      letter-spacing: -0.5px;
+    }
+
+    .logo i {
+      font-size: 2.3rem;
+      color: #e2ff8b;
+      filter: drop-shadow(0 4px 6px #0f3f0f);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 16px;
+    }
+
+    .nav-buttons button {
+      padding: 10px 22px;
+      border: none;
+      background: #5fa04b;
+      color: white;
+      border-radius: 60px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 10px 15px -8px #1c441c;
+      border: 1px solid #b3e0a0;
+    }
+
+    .nav-buttons button:last-child {
+      background: #f5ffe1;
+      color: #1e5e1e;
+    }
+
+    .nav-buttons button:hover {
+      transform: translateY(-3px);
+      background: #367a3a;
+      color: white;
+      border-color: white;
+    }
+
+    /* hero with floating effect */
+    .hero {
+      height: 450px;
+      background: linear-gradient(130deg, #0a3a0a, #1d631d), url('https://images.unsplash.com/photo-1500595046743-cd271d694d30') center/cover;
+      background-blend-mode: overlay;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: linear-gradient(transparent, #edf7ea);
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      max-width: 900px;
+      text-shadow: 0 10px 20px #022002;
+      background: rgba(0, 20, 0, 0.25);
+      backdrop-filter: blur(6px);
+      padding: 1rem 2.5rem;
+      border-radius: 100px;
+      border: 1px solid rgba(255, 255, 200, 0.4);
+      animation: gentleGlow 4s infinite alternate;
+    }
+
+    @keyframes gentleGlow {
+      0% { box-shadow: 0 0 10px #aae0a0; }
+      100% { box-shadow: 0 0 30px #f5ffb2; }
+    }
+
+    /* containers */
+    .container {
+      padding: 3rem 4rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 2.2rem;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: #1d631d;
+      border-left: 8px solid #7abf5e;
+      padding-left: 1.5rem;
+      text-shadow: 2px 2px 10px #d5f5cc;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      padding: 2.5rem 2rem;
+      border-radius: 40px;
+      box-shadow: 0 25px 40px -15px #2a5e2a;
+      transition: all 0.3s;
+      border: 1px solid #cef5bc;
+    }
+
+    .card:hover {
+      transform: translateY(-12px) scale(1.01);
+      background: white;
+      box-shadow: 0 35px 55px -12px #164016;
+    }
+
+    .card i {
+      font-size: 3rem;
+      color: #287a2e;
+      margin-bottom: 1.3rem;
+    }
+
+    .card h3 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+
+    /* gallery ultra */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+    }
+
+    .gallery-grid img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 35px;
+      box-shadow: 0 25px 35px -12px #1e4d1e;
+      transition: 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+      border: 4px solid white;
+    }
+
+    .gallery-grid img:hover {
+      transform: scale(1.05) rotate(1deg);
+      border-color: #b3f59b;
+    }
+
+    /* weather palace - WITH SEARCH BAR */
+    .weather-card {
+      background: linear-gradient(115deg, #b8e0a8, #99cf89);
+      border-radius: 50px;
+      padding: 2.2rem 3rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2.5rem;
+      box-shadow: 0 25px 30px -10px #2f6b2f;
+      border: 1px solid #f5ffe1;
+      gap: 20px;
+    }
+
+    .weather-info {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      align-items: center;
+      flex: 2;
+    }
+
+    .weather-icon-temp {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: white;
+      padding: 10px 40px 10px 30px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #145214;
+      box-shadow: inset 0 4px 8px #aad8a0;
+    }
+
+    .weather-icon-temp i {
+      font-size: 3rem;
+    }
+
+    .weather-details p {
+      margin: 8px 0;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .weather-search {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .weather-search input {
+      flex: 2;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 60px;
+      font-size: 1rem;
+      background: white;
+      box-shadow: 0 4px 12px #7ca87c inset;
+      min-width: 200px;
+    }
+
+    .weather-search input:focus {
+      outline: 3px solid #4caf50;
+    }
+
+    .weather-search button {
+      background: #1c5e1c;
+      border: none;
+      color: white;
+      padding: 14px 28px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 12px 18px -6px #124012;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+
+    .weather-search button:hover {
+      background: #2f8a2f;
+      transform: scale(1.04);
+    }
+
+    .location-badge {
+      background: rgba(255,255,255,0.3);
+      padding: 6px 16px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* MODAL AUTH */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(6, 40, 6, 0.7);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2.8rem 3rem;
+      border-radius: 60px;
+      width: 400px;
+      text-align: center;
+      box-shadow: 0 40px 70px #102010;
+    }
+
+    .modal-content h3 {
+      font-size: 2.4rem;
+      margin-bottom: 1.8rem;
+      color: #1b5e20;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 16px 26px;
+      margin: 12px 0;
+      border: 1px solid #b3ecaa;
+      border-radius: 60px;
+      font-size: 1rem;
+    }
+
+    .modal-content button {
+      width: 100%;
+      padding: 16px;
+      background: #2e7d32;
+      border: none;
+      color: white;
+      border-radius: 60px;
+      margin-top: 20px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .google-btn {
+      background: #4285F4 !important;
+    }
+
+    /* FLOATING CHAT TRIGGER */
+    .chat-trigger {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 80px;
+      height: 80px;
+      background: #1b5e20;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.8rem;
+      box-shadow: 0 20px 30px -5px #0f3f0f, 0 0 0 6px rgba(200, 250, 160, 0.4);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.3, 1.2, 0.4, 1.5);
+      z-index: 200;
+      border: 3px solid #c6ffa3;
+    }
+
+    .chat-trigger:hover {
+      transform: scale(1.15) rotate(5deg);
+      background: #2d8b34;
+      box-shadow: 0 30px 40px -8px #1b661b;
+    }
+
+    .chat-trigger i {
+      filter: drop-shadow(0 4px 5px #031003);
+    }
+
+    /* pulsating effect */
+    .chat-trigger::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: rgba(120, 220, 100, 0.5);
+      z-index: -1;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.7; }
+      70% { transform: scale(1.5); opacity: 0; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+
+    /* CHAT PANEL (hidden by default) */
+    .chat-container {
+      position: fixed;
+      bottom: 120px;
+      right: 30px;
+      width: 400px;
+      height: 580px;
+      background: white;
+      border-radius: 45px 45px 45px 45px;
+      box-shadow: 0 40px 60px -10px #1f4a1f;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 3px solid #adde9c;
+      z-index: 210;
+      transition: 0.25s ease-in-out;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px) scale(0.95);
+      pointer-events: none;
+    }
+
+    .chat-container.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    .chat-header {
+      background: #1b5e20;
+      color: white;
+      padding: 20px 25px;
+      font-weight: 700;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .chat-header i {
+      font-size: 2.2rem;
+      color: #dcffb8;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: #f6fff0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .message {
+      padding: 14px 18px;
+      border-radius: 28px;
+      max-width: 80%;
+      word-break: break-word;
+      line-height: 1.45;
+      animation: fadeUp 0.2s;
+    }
+
+    @keyframes fadeUp {
+      0% { opacity:0; transform: translateY(8px); }
+    }
+
+    .user {
+      background: #c5efbb;
+      align-self: flex-end;
+      border-bottom-right-radius: 6px;
+      font-weight: 500;
+      color: #153f15;
+    }
+
+    .bot {
+      background: white;
+      align-self: flex-start;
+      border-bottom-left-radius: 6px;
+      border: 1px solid #bae0ae;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 3px solid #bbdfb0;
+      background: white;
+      padding: 10px 12px;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 50px;
+      background: #eaffdf;
+      font-size: 1rem;
+    }
+
+    .chat-input input:focus {
+      outline: 3px solid #7abf5e;
+    }
+
+    .chat-input button {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      padding: 15px 24px;
+      margin-left: 12px;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.15s;
+    }
+
+    .chat-input button:hover {
+      background: #1d5e1d;
+      transform: scale(1.02);
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 28px;
+      background: #1b5e20;
+      color: #efffe0;
+      text-align: center;
+      font-size: 1.2rem;
+      border-top-left-radius: 60px;
+      border-top-right-radius: 60px;
+    }
+
+    /* configuration note */
+    .config-note {
+      background: #fffacd;
+      border-left: 6px solid #1b5e20;
+      padding: 15px 25px;
+      margin: 20px 40px 0 40px;
+      border-radius: 12px;
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+
+    /* current location indicator */
+    .current-location {
+      font-size: 0.9rem;
+      color: #1d4d1d;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- CONFIGURATION SECTION - DELETE THIS AFTER SETUP -->
+<div class="config-note">
+  <strong>🔧 SETUP INSTRUCTIONS (delete this box after):</strong><br>
+  1. <strong>WEATHER API:</strong> Replace "YOUR_OPENWEATHER_API_KEY" in the script below with your actual API key<br>
+  2. <strong>AGENT LINK:</strong> Replace "YOUR_N8N_WEBHOOK_URL" in the script with your n8n webhook URL<br>
+  3. <strong>LOCATION SEARCH:</strong> Use the search bar to check weather anywhere!
+</div>
+
+<nav>
+  <div class="logo"><i class="fas fa-tree"></i> AgriMind AI</div>
+  <div class="nav-buttons">
+    <button onclick="openModal('login')"><i class="fas fa-right-to-bracket"></i> Login</button>
+    <button onclick="openModal('signup')"><i class="fas fa-user-plus"></i> Sign Up</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>🌿 AI agent · tap the floating leaf</h1>
+</section>
+
+<div class="container">
+  <div class="section-title"><i class="fas fa-microchip"></i> precision agri‑intelligence</div>
+  <div class="grid">
+    <div class="card"><i class="fas fa-leaf"></i><h3>Crop health</h3><p>Multispectral analysis & disease alerts</p></div>
+    <div class="card"><i class="fas fa-cloud-sun"></i><h3>Weather fusion</h3><p>Field-level microclimate insights</p></div>
+    <div class="card"><i class="fas fa-comment-dots"></i><h3>Floating AI</h3><p>Agent hides — appears with one tap</p></div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section-title"><i class="fas fa-images"></i> farm scapes</div>
+  <div class="gallery-grid">
+    <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6" alt="field">
+    <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399" alt="orchard">
+    <img src="https://images.unsplash.com/photo-1471193945509-9ad0617afabf" alt="harvest">
+    <img src="https://images.unsplash.com/photo-1500595046743-cd271d694d30" alt="landscape">
+  </div>
+
+  <!-- weather card - WITH LOCATION SEARCH BAR -->
+  <div class="weather-card">
+    <div class="weather-info">
+      <div>
+        <div class="weather-icon-temp" id="weatherDisplay">
+          <i class="fas fa-cloud-sun"></i>
+          <span id="weatherTemp">-- °C</span>
+        </div>
+        <div class="current-location" id="currentLocation">
+          <i class="fas fa-map-pin"></i> <span id="locationName">London</span>
+        </div>
+      </div>
+      <div class="weather-details" id="weatherDetails">
+        <p><i class="fas fa-droplet"></i> Humidity: --%</p>
+        <p><i class="fas fa-wind"></i> Wind: -- km/h</p>
+        <p><i class="fas fa-cloud"></i> Conditions: --</p>
+      </div>
+    </div>
+    
+    <!-- LOCATION SEARCH BAR -->
+    <div class="weather-search">
+      <input type="text" id="locationSearch" placeholder="Search city... e.g., Paris, New York, Tokyo" value="London">
+      <button id="weatherBtn"><i class="fas fa-search"></i> Get Weather</button>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal" id="authModal">
+  <div class="modal-content">
+    <h3 id="modalTitle">Login</h3>
+    <input id="email" placeholder="farmer@agri.com" value="demo@agri.com">
+    <input id="password" type="password" placeholder="••••••••" value="123456">
+    <button onclick="login()"><i class="fas fa-key"></i> continue</button>
+    <button class="google-btn" onclick="fakeGoogleLogin()"><i class="fab fa-google"></i> Google login</button>
+  </div>
+</div>
+
+<!-- FLOATING TRIGGER BUTTON -->
+<div class="chat-trigger" id="chatTrigger" onclick="toggleChat()">
+  <i class="fas fa-comment-dots"></i>
+</div>
+
+<!-- AI CHAT (initially closed) -->
+<div class="chat-container" id="chatContainer">
+  <div class="chat-header">
+    <i class="fas fa-robot"></i> Smarter Agriculture System
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="message bot">🌱 hidden agent now visible! describe crop symptoms</div>
+  </div>
+  <div class="chat-input">
+    <input id="userInput" placeholder="e.g., brown leaves on corn..." value="yellow spots on pepper">
+    <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<footer>
+  <i class="fas fa-leaf"></i> semester project — tap the chat bubble to meet the AI
+</footer>
+
+<script>
+  // =====================================================
+  //  CONFIGURATION - INSERT YOUR KEYS HERE
+  // =====================================================
+  
+  // 1. YOUR OPENWEATHER API KEY (get from https://openweathermap.org/api)
+  const WEATHER_API_KEY = "1b88bb1d568d27eec3dcb946890d555b";  // <-- REPLACE THIS
+  
+  // 2. YOUR N8N WEBHOOK URL (your AI agent endpoint)
+  const N8N_WEBHOOK_URL = "https://primary-production-6a546.up.railway.app/webhook/0e9e2bbe-92ab-41b5-a7a8-27949e031dcd";      // <-- REPLACE THIS
+  
+  // =====================================================
+  
+  // Default location
+  let currentLocation = "London";
+  
+  // toggle chat visibility
+  function toggleChat() {
+    const chat = document.getElementById('chatContainer');
+    chat.classList.toggle('open');
+    const triggerIcon = document.querySelector('#chatTrigger i');
+    if (chat.classList.contains('open')) {
+      triggerIcon.className = 'fas fa-times';
+    } else {
+      triggerIcon.className = 'fas fa-comment-dots';
+    }
+  }
+
+  // auth modal
+  function openModal(type) {
+    document.getElementById('authModal').style.display = 'flex';
+    document.getElementById('modalTitle').innerText = type === 'signup' ? 'Sign Up' : 'Login';
+  }
+  
+  window.onclick = function(e) {
+    if (e.target.id === 'authModal') {
+      document.getElementById('authModal').style.display = 'none';
+    }
+  };
+  
+  function login() {
+    let email = document.getElementById('email').value.trim() || 'demo@agri.com';
+    localStorage.setItem('user', email);
+    alert('✅ welcome ' + email.split('@')[0]);
+    document.getElementById('authModal').style.display = 'none';
+  }
+  
+  function fakeGoogleLogin() {
+    localStorage.setItem('user', 'google_farmer@agri.com');
+    alert('✅ google login (demo)');
+    document.getElementById('authModal').style.display = 'none';
+  }
+
+  // weather with hardcoded API key and location search
+  async function getWeather(location) {
+    if (WEATHER_API_KEY === "1b88bb1d568d27eec3dcb946890d555b") {
+      alert('⚠️ Please set your OpenWeather API key in the script (line with WEATHER_API_KEY)');
+      return;
+    }
+    
+    try {
+      // Show loading state
+      document.getElementById('weatherTemp').innerText = 'loading...';
+      
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&units=metric&appid=${WEATHER_API_KEY}`);
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('City not found. Please check the spelling.');
+        } else {
+          throw new Error('Invalid API key or city');
+        }
+      }
+      
+      const data = await response.json();
+      
+      // Update UI
+      document.getElementById('weatherTemp').innerText = Math.round(data.main.temp) + ' °C';
+      document.getElementById('locationName').innerText = data.name + ', ' + data.sys.country;
+      
+      // Get weather condition and icon
+      const condition = data.weather[0].description;
+      const mainCondition = data.weather[0].main.toLowerCase();
+      
+      document.getElementById('weatherDetails').innerHTML = `
+        <p><i class="fas fa-droplet"></i> Humidity: ${data.main.humidity}%</p>
+        <p><i class="fas fa-wind"></i> Wind: ${data.wind.speed} km/h</p>
+        <p><i class="fas fa-cloud"></i> ${condition.charAt(0).toUpperCase() + condition.slice(1)}</p>
+      `;
+      
+      // Set appropriate icon
+      let iconClass = 'fa-sun';
+      if (mainCondition.includes('cloud')) iconClass = 'fa-cloud';
+      else if (mainCondition.includes('rain')) iconClass = 'fa-cloud-rain';
+      else if (mainCondition.includes('snow')) iconClass = 'fa-snowflake';
+      else if (mainCondition.includes('thunder')) iconClass = 'fa-cloud-bolt';
+      else if (mainCondition.includes('mist') || mainCondition.includes('fog')) iconClass = 'fa-smog';
+      
+      document.querySelector('.weather-icon-temp i').className = `fas ${iconClass}`;
+      
+      // Update current location
+      currentLocation = data.name;
+      
+    } catch (error) {
+      alert('❌ weather error: ' + error.message);
+      document.getElementById('weatherTemp').innerText = '-- °C';
+    }
+  }
+
+  // Weather button click handler
+  document.getElementById('weatherBtn').addEventListener('click', function() {
+    const searchInput = document.getElementById('locationSearch').value.trim();
+    if (searchInput) {
+      getWeather(searchInput);
+    } else {
+      alert('Please enter a location');
+    }
+  });
+
+  // Allow Enter key in search input
+  document.getElementById('locationSearch').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      document.getElementById('weatherBtn').click();
+    }
+  });
+
+  // Load default weather on page load
+  window.addEventListener('load', function() {
+    if (WEATHER_API_KEY !== "1b88bb1d568d27eec3dcb946890d555b") {
+      getWeather('London');
+    }
+  });
+
+  // chat with n8n agent
+  async function sendMessage() {
+    let input = document.getElementById('userInput');
+    let msg = input.value.trim();
+    if (!msg) return;
+    
+    let chat = document.getElementById('chatMessages');
+    chat.innerHTML += `<div class="message user">${msg}</div>`;
+    input.value = '';
+
+    // Check if webhook URL is configured
+    if (N8N_WEBHOOK_URL === "YOUR_N8N_WEBHOOK_URL") {
+      // Use mock responses if no webhook
+      setTimeout(() => {
+        chat.innerHTML += `<div class="message bot">${generateMockReply(msg)}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+      }, 600);
+      return;
+    }
+
+    // Try to use real n8n webhook
+    try {
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          query: msg,
+          location: currentLocation,
+          timestamp: new Date().toISOString(),
+          user: localStorage.getItem('user') || 'guest'
+        })
+      });
+      
+      const data = await response.json();
+      
+      // Handle different response formats
+      const botResponse = data.response || data.output || data.message || data.text || JSON.stringify(data);
+      chat.innerHTML += `<div class="message bot">${botResponse}</div>`;
+      
+    } catch (error) {
+      console.error('Agent error:', error);
+      chat.innerHTML += `<div class="message bot">⚠️ Agent unavailable. Using offline mode.<br>${generateMockReply(msg)}</div>`;
+    }
+    
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  // intelligent mock responses
+  function generateMockReply(q) {
+    const text = q.toLowerCase();
+    if (text.includes('yellow')) return '🌽 Yellowing may indicate nitrogen deficiency. Try compost tea or side-dress with urea.';
+    if (text.includes('brown spot') || text.includes('spots')) return '🍅 Likely early blight. Remove affected leaves and apply copper fungicide.';
+    if (text.includes('wilt')) return '💧 Wilting = possible bacterial infection or dry spell. Check soil and roots.';
+    if (text.includes('aphid') || text.includes('pest')) return '🐞 Introduce ladybugs or spray neem oil diluted.';
+    if (text.includes('pepper') || text.includes('tomato')) return '🌶️ Peppers love warmth. Ensure calcium to avoid blossom end rot.';
+    if (text.includes('weather')) return `☁️ Current weather in ${currentLocation}: ${document.getElementById('weatherTemp').innerText}`;
+    return '🧑‍🌾 Thank you. I recommend soil moisture check and local observation.';
+  }
+
+  // allow enter key in chat
+  document.getElementById('userInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  // welcome message if user is logged in
+  window.onload = function() {
+    if (localStorage.getItem('user')) {
+      console.log('User logged in:', localStorage.getItem('user'));
+    }
+  };
+</script>
+
+</body>
+</html>
